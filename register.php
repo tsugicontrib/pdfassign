@@ -4,7 +4,7 @@ $REGISTER_LTI2 = array(
 "name" => "PDF Annotator",
 "FontAwesome" => "fa-file-pdf-o",
 "short_name" => "PDF Grader",
-"description" => "A tool to turn in PDF files and allow those files to be annotated and graded.",
+"description" => "A tool to turn in PDF files and allow those files to be annotated and graded.  Does not require a browser plugin but does require a CloudConvert account (free available).",
     // By default, accept launch messages..
     "messages" => array("launch"),
     "privacy_level" => "name_only",  // anonymous, name_only, public
