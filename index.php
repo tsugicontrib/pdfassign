@@ -67,13 +67,6 @@ $context_settings = $TSUGI_LAUNCH->context->settingsGetAll();
 
 // https://github.com/cloudconvert/cloudconvert-php
 if ( $thefdes ) {
-/*
-    $cloudconvert = new CloudConvert([
-    'api_key' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiMDQ4OGVmMTBkZTY0ODA2YmQyZjM2NjBjZDMyMDM5ZjI5MGU5MGYwMGYyMzdkMWYwMTJjN2ZkY2ExYWU0YTAxMjc1ODNmYWE1NTlkNGEwIn0.eyJhdWQiOiIxIiwianRpIjoiOGIwNDg4ZWYxMGRlNjQ4MDZiZDJmMzY2MGNkMzIwMzlmMjkwZTkwZjAwZjIzN2QxZjAxMmM3ZmRjYTFhZTRhMDEyNzU4M2ZhYTU1OWQ0YTAiLCJpYXQiOjE1ODMyODM2NzgsIm5iZiI6MTU4MzI4MzY3OCwiZXhwIjo0NzM4OTU3Mjc4LCJzdWIiOiI0MDUwNDUwOCIsInNjb3BlcyI6WyJ0YXNrLndyaXRlIiwidGFzay5yZWFkIiwidXNlci53cml0ZSIsInVzZXIucmVhZCJdfQ.k-sKo5vLzrZF30ZM666lxFq7qsxVDpyvmN9yuu3_Ya3PohyY2MUW_a65ZCwisD_GNp_0a8IxEpnzhlE1pZcrbxZhNrvHqFl7SwbQ_chj_dQo9E8Oih7jLcYqvgjbdYfhyHa2EZ20SsA8B5vlWd3-mO6Sq_gBz-3F7QDmEBI_wg_g5r9zmtU_I4ORJHOFT_lcJA7SOmarzHnjgPAzADerWq2jnQYdFJ5dr-cwgZ0N_7_bfPd-3Z5_LYhumv4VfbMofa182DgXP7sWG7VMg-p1uRBjfJJKEQjs9EkTNzM4GtKTYuZs4Qoj5DbqBm6hF0gdvzLj0Gf0nTp4a2pNqfFDP4jSz143cLHq1RXtbTuKpqodLHNMuxIKGwJ_JsqFSgg5mXsMdtAMTGIwAb3mtN0SY5tCQ7N6VpJ_-VPT1tMa081eyF9JNB6T2jy-pW05JGSMr2Hw4pkaXGQTfT7CM3Zsc7VCgjPu7H1cxPdsGw6lQRHv9FxgNhReuwiD9Bv1qpPUKF6h2ynDGD5KwmtZlqL2zadKZywxFwYah9JGcDflEHXzc20nj5pEAPCBORgW-7egWmTNjZEimMCqnR7fm94bsfzIEnGnSOSlgcG4jP0qx3SLwXOJl2kK04450eJtUfiaTIp6jnQoUCfsZglmAqAj6CFiPn9N4kUKdKX-2vwaYyI',
-    'sandbox' => true
-]);
- */
-
     $api_key = U::get($context_settings, 'api_key');
     $sandbox = U::get($context_settings, 'sandbox');
     // echo("<pre>\n");var_dump($api_key); die();
