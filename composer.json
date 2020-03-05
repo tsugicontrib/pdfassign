@@ -1,0 +1,5 @@
+{
+    "require": {
+        "cloudconvert/cloudconvert-php": "^3.0"
+    }
+}
