@@ -53,11 +53,11 @@ foreach($_FILES as $fdes) {
 // Handle Post Data
 $p = $CFG->dbprefix;
 $context_settings = $TSUGI_LAUNCH->context->settingsGetAll();
+$api_key = U::get($context_settings, 'api_key');
+$sandbox = U::get($context_settings, 'sandbox');
 
 // https://github.com/cloudconvert/cloudconvert-php
-if ( $thefdes ) {
-    $api_key = U::get($context_settings, 'api_key');
-    $sandbox = U::get($context_settings, 'sandbox');
+if ( $api_key && $thefdes ) {
     // echo("<pre>\n");var_dump($api_key); die();
     $cloudconvert = new CloudConvert([
         'api_key' => $api_key,
@@ -87,14 +87,17 @@ $job = (new Job())
 
     $job_id = $job->getId();
     $_SESSION['job_id'] = $job_id;
-    echo("Job ID per_create ".$job_id."\n");
+    $_SESSION['job_start'] = time();
+
+    error_log("Job created ".$job_id);
 
     $uploadTask = $job->getTasks()->name('upload-my-file')[0];
 
-    echo('File '.$thefdes['tmp_name']."\n");
     $cloudconvert->tasks()->upload($uploadTask, fopen($thefdes['tmp_name'], 'r'));
 
-    var_dump($fdes);die();
+    $_SESSION['success'] = "Data uploaded ".$job_id;
+    header('Location: '.addSession('wait.php'));
+    return;
 } 
 
 
@@ -124,8 +127,11 @@ if ( $USER->instructor ) {
 
 $OUTPUT->flashMessages();
 
-echo("<!-- Classic single-file version of the tool -->\n");
-
+if ( ! $api_key ) {
+    echo("<p>".__('Not configured')."</p>");
+    $OUTPUT->footer();
+    return;
+}
 ?>
 <p>
 <form action="<?= addSession('index.php') ?>" method="post" id="upload_form" enctype="multipart/form-data">

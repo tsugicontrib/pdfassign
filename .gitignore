@@ -4,5 +4,6 @@
 old
 test
 vendor
+output
 composer.lock
 
