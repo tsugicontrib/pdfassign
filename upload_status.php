@@ -7,6 +7,7 @@ use \Tsugi\Util\Net;
 use \Tsugi\Core\LTIX;
 use \Tsugi\Core\Settings;
 use \Tsugi\UI\SettingsForm;
+use \Tsugi\Blob\BlobUtil;
 
 use \CloudConvert\CloudConvert;
 use \CloudConvert\Models\Job;
@@ -30,7 +31,7 @@ if ( $job_start ) {
     $retval['ellapsed'] = time() - $job_start;
 }
 
-$context_settings = $TSUGI_LAUNCH->context->settingsGetAll();
+$context_settings = $LAUNCH->context->settingsGetAll();
 
 // https://github.com/cloudconvert/cloudconvert-php
 $api_key = U::get($context_settings, 'api_key');
@@ -77,13 +78,21 @@ if ( $status != Job::STATUS_FINISHED ) {
 $results = array();
 foreach ($job->getExportUrls() as $file) {
 
-    error_log('Started Copying '.$file->filename);
+    error_log('Started download '.$file->url);
     $source = $cloudconvert->getHttpTransport()->download($file->url)->detach();
-    $dest = fopen('output/' . $file->filename, 'w');
+    error_log('Download complete '.$file->url);
 
-    $results[] = "output/".$file->filename;
+    $temp_file = tempnam(sys_get_temp_dir(), $job->getTag());
+    $dest = fopen($temp_file, 'w');
+
+    $results[] = $temp_file;
     stream_copy_to_stream($source, $dest);
-    error_log('Finished Copying '.$file->filename);
+    error_log('Inserting Blob '.$temp_file);
+    $blob_id = BlobUtil::uploadPathToBlob($temp_file, 'text/html');
+    error_log('Inserted Blob '.$temp_file.' '.$blob_id);
+    $LAUNCH->result->setJsonKey('blob_id', $blob_id);
+
+    // TODO: unlink($temp_file);
 
 }
 $retval['results'] = $results;

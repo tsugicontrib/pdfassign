@@ -33,6 +33,7 @@ $OUTPUT->flashMessages();
 Job: <span id="job_id"></span>
 Status: <span id="status"></span>
 Ellapsed: <span id="ellapsed"></span>
+<span id="spinner" style="display:none;"><img src="<?= $OUTPUT->getSpinnerUrl() ?>"/></span>
 </p>
 <?php
 $OUTPUT->footerStart();
@@ -40,8 +41,10 @@ $OUTPUT->footerStart();
 <script>
 function checkStatus() {
     console.log('checkStatus()');
+    $('#spinner').show();
     $.getJSON( '<?= addSession("upload_status.php") ?>', function( data ) {
         console.log(data);
+        $('#spinner').hide();
         $('#status').html(data.status);
         $('#job_id').html(data.job_id);
         $('#ellapsed').html(data.ellapsed);
@@ -49,9 +52,7 @@ function checkStatus() {
             setTimeout(checkStatus, 5000);
             return;
         }
-        redirect = data.results[0];
-        console.log('Redirect', redirect);
-        window.location.replace(redirect);
+        window.location.replace('<?= addSession("index.php") ?>');
     });
 }
 setTimeout(checkStatus, 2000);

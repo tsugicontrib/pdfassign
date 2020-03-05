@@ -100,6 +100,7 @@ $job = (new Job())
     return;
 } 
 
+$blob_id = $LAUNCH->result->getJsonKey('blob_id');
 
 // Render view
 $OUTPUT->header();
@@ -111,6 +112,7 @@ $OUTPUT->welcomeUserCourse();
 
 if ( $USER->instructor ) {
     echo('<div style="float:right;">');
+    echo('<a href="view.php"><button class="btn btn-info">View</button></a> '."\n");
     echo('<a href="config.php"><button class="btn btn-info">Configure</button></a> '."\n");
     echo('<a href="annotate.php" class="btn btn-primary">Annotate</a>');
     SettingsForm::button(false);
@@ -131,6 +133,10 @@ if ( ! $api_key ) {
     echo("<p>".__('Not configured')."</p>");
     $OUTPUT->footer();
     return;
+}
+
+if ( $blob_id ) {
+    echo("<p>Blob_id: $blob_id</p>\n");
 }
 ?>
 <p>
