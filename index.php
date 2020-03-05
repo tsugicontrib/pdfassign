@@ -1,34 +1,23 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 require_once "../config.php";
-require_once "upload_util.php";
-// The Tsugi PHP API Documentation is available at:
-// http://do1.dr-chuck.com/tsugi/phpdoc/
 
 use \Tsugi\Util\U;
 use \Tsugi\Util\Net;
 use \Tsugi\Core\LTIX;
 use \Tsugi\Core\Settings;
 use \Tsugi\UI\SettingsForm;
+use \Tsugi\Blob\BlobUtil;
 
 use \CloudConvert\CloudConvert;
 use \CloudConvert\Models\Job;
 use \CloudConvert\Models\Task;
 
-// Get the max size
-// https://stackoverflow.com/questions/13076480/php-get-actual-maximum-upload-size
-$post_max_size = ini_get('post_max_size');
-$post_max_size_bytes = return_bytes($post_max_size);
-$upload_max_size = ini_get('upload_max_filesize');
-$upload_max_size_bytes = return_bytes($upload_max_size);
-// echo("pms=$post_max_size ums=$upload_max_size\n");die();
-if ( $post_max_size_bytes < $upload_max_size_bytes ) {
-    $upload_max_size = $post_max_size;
-    $upload_max_size_bytes = $post_max_size_bytes;
-}
-
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
+
+$upload_max_size_bytes = BlobUtil::maxUploadBytes();
+$upload_max_size = U::displaySize($upload_max_size_bytes);
 
 // If settings were updated
 if ( SettingsForm::handleSettingsPost() ) {
