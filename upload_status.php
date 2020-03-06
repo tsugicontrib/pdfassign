@@ -69,6 +69,24 @@ $debug['created_at'] = $job->getCreatedAt();
 $debug['ended_at'] = $job->getEndedAt();
 $retval['job'] = $debug;
 
+if ( $status == Job::STATUS_ERROR ) {
+	$all_tasks = $job->getTasks();
+	$tasks = array();
+    $code = false;
+	foreach($all_tasks as $one_task) {
+		// It seems like the last one is the best one...
+		$code = $one_task->getCode();
+		$task = array();
+		$task['code'] = $one_task->getCode();
+		$task['message'] = $one_task->getMessage();
+		$tasks[] = $task;
+	}
+	if ( $code) $retval['code'] = $code;
+	$retval['tasks'] = $tasks;
+    echo(json_encode($retval, JSON_PRETTY_PRINT));
+    return;
+}
+
 $previous_status = U::get($_SESSION, 'previous_status');
 
 if ( $status != Job::STATUS_FINISHED ) {

@@ -27,10 +27,9 @@ $OUTPUT->welcomeUserCourse();
 $OUTPUT->flashMessages();
 
 ?>
-<p>Waiting...</p>
-<p><a href="upload_status.php" target="_blank">Status</a></p>
+<p>Converting your PDF - This can take 1-3 minutes...</p>
+<p><a href="upload_status.php" target="_blank">Status (Debug only)</a></p>
 <p>
-Job: <span id="job_id"></span>
 Status: <span id="status"></span>
 Ellapsed: <span id="ellapsed"></span>
 <span id="spinner" style="display:none;"><img src="<?= $OUTPUT->getSpinnerUrl() ?>"/></span>
@@ -48,6 +47,10 @@ function checkStatus() {
         $('#status').html(data.status);
         $('#job_id').html(data.job_id);
         $('#ellapsed').html(data.ellapsed);
+        if ( data.status == 'error') {
+			alert('Something went wrong with the conversion, detail: '+data.code);
+			return;
+		}
         if ( data.status == 'downloading') {
             setTimeout(checkStatus, 1000);
             return;
@@ -56,7 +59,7 @@ function checkStatus() {
             setTimeout(checkStatus, 5000);
             return;
         }
-        window.location.replace('<?= addSession("index.php") ?>');
+        window.location.replace('<?= addSession("view.php") ?>');
     });
 }
 setTimeout(checkStatus, 2000);

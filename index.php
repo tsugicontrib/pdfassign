@@ -123,6 +123,20 @@ if ( $USER->instructor ) {
     echo("<p>Configure the LTI Tool<p>\n");
     SettingsForm::text('code',__('Code'));
     SettingsForm::checkbox('grade',__('Send a grade'));
+?>
+<p>
+This program makes use of the following technologies:
+<ul>
+<li> Online conversion from PDF to HTML
+<a href="https://cloudconvert.com" target="_blank">CloudConvert API</a> </li>
+<li>Open Source JavaScript annotation software from 
+<a href="https://annotatorjs.org/" target="_blank">Annotator JS</a></li>
+</ul>
+The CloudConvert API requires a license.  There are free licenses available
+for a few conversions per day.  Use the <b>Configure</b> option to set your
+license key across all the links for a particular class.
+</p>
+<?php
     SettingsForm::done();
     SettingsForm::end();
 }
