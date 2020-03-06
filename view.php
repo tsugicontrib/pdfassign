@@ -27,8 +27,26 @@ $type = $retval[1];
 
 header("Content-Type: ".$type);
 
-$head_content = "<script>alert('in the head');</script></head>";
-$body_content = "<script>alert('in the body');</script></body>";
+$head_content = '
+<link href="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
+<link rel="stylesheet" href="'.$CFG->staticroot.'/js/annotator-full.1.2.10/annotator.min.css" />
+</head>';
+$body_content = '
+<script src="'.$CFG->staticroot.'/js/jquery-1.11.3.js"></script>
+<script src="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script src="'.$CFG->staticroot.'/js/annotator-full.1.2.10/annotator-full.min.js"></script>
+<script type="text/javascript">
+function startAnnotate() {
+  var ann = new Annotator(jQuery(\'#page-container\'));
+  console.log(ann);
+  console.log("Annotator started");
+}
+$(document).ready( function () {
+    setTimeout(startAnnotate, 10);
+    console.log("timer started...");
+});
+</script>
+</body>';
 
 if ( is_string($blob) ) {
     $new_blob = str_replace('</head>', $head_content, $blob);
