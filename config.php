@@ -48,6 +48,20 @@ $OUTPUT->welcomeUserCourse();
 // echo("<pre>\n");var_dump($set);echo("</pre>\n");
 
 ?>
+<p>
+This tool will not work without an API key from 
+<a href="https://cloudconvert.com/" target="_blank">
+CloudConvert</a> so that it can convert PDF files to
+HTML files for annotation.  CloudConvert provides limited use
+API keys for free and you can use their sandbox API with a limited set of
+PDF files for testing.
+<b>Privacy Note:</b>
+Once a PDF file has been converted,
+the HTML is pulled back into this system and and served from
+this system for viewing and annotation.  CloudConvert
+does <b>not</b> any data longer than 24 hours.  It is merely a conversion
+service.
+</p>
 <p><b>Note:</b> This is a per-course configuration, not a per-link
 configuration so <b>changing this configuration</b>
 affects all of the links in a course.  So be careful.

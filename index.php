@@ -112,9 +112,8 @@ $OUTPUT->welcomeUserCourse();
 
 if ( $USER->instructor ) {
     echo('<div style="float:right;">');
-    echo('<a href="view.php"><button class="btn btn-info">View</button></a> '."\n");
-    echo('<a href="config.php"><button class="btn btn-info">Configure</button></a> '."\n");
     echo('<a href="annotate.php" class="btn btn-primary">Annotate</a>');
+    echo('<a href="config.php"><button class="btn btn-info">Configure</button></a> '."\n");
     SettingsForm::button(false);
     echo('</div>');
 
