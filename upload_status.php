@@ -69,10 +69,21 @@ $debug['created_at'] = $job->getCreatedAt();
 $debug['ended_at'] = $job->getEndedAt();
 $retval['job'] = $debug;
 
+$previous_status = U::get($_SESSION, 'previous_status');
+
 if ( $status != Job::STATUS_FINISHED ) {
     echo(json_encode($retval, JSON_PRETTY_PRINT));
     return;
 }
+
+if ( $status == Job::STATUS_FINISHED && ! $previous_status ) {
+    $_SESSION['previous_status'] = $status;
+    $retval['status'] = 'downloading';
+    echo(json_encode($retval, JSON_PRETTY_PRINT));
+    return;
+}
+
+unset($_SESSION['previous_status']);
 
 // TODO: Try / except here
 $results = array();

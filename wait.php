@@ -48,6 +48,10 @@ function checkStatus() {
         $('#status').html(data.status);
         $('#job_id').html(data.job_id);
         $('#ellapsed').html(data.ellapsed);
+        if ( data.status == 'downloading') {
+            setTimeout(checkStatus, 1000);
+            return;
+        }
         if ( data.status != 'finished') {
             setTimeout(checkStatus, 5000);
             return;
