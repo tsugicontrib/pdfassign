@@ -3,16 +3,9 @@ require __DIR__ . '/vendor/autoload.php';
 require_once "../config.php";
 
 use \Tsugi\Util\U;
-use \Tsugi\Util\Net;
 use \Tsugi\Core\LTIX;
-use \Tsugi\Core\Settings;
-use \Tsugi\UI\SettingsForm;
-use \Tsugi\Blob\BlobUtil;
+use \Tsugi\UI\Annotate;
 use \Tsugi\Blob\Access;
-
-use \CloudConvert\CloudConvert;
-use \CloudConvert\Models\Job;
-use \CloudConvert\Models\Task;
 
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
@@ -32,6 +25,7 @@ $api_endpoint = $CFG->wwwroot . '/api/annotate/' . session_id() . ':' . $LAUNCH-
 $matches = array(
     array(false, '</head>','
 <link href="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
+'.Annotate::header().'
 <link rel="stylesheet" href="'.$CFG->staticroot.'/js/annotator-full.1.2.10/annotator.min.css" />
 </head>'),
     array(false, '<div id="page-container">', '
@@ -43,23 +37,10 @@ style="position: fixed; border-radius: 4px; border: 4px solid darkblue; z-index:
     array(false, '</body>', '
 <script src="'.$CFG->staticroot.'/js/jquery-1.11.3.js"></script>
 <script src="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
-<script src="'.$CFG->staticroot.'/js/annotator-full.1.2.10/annotator-full.min.js"></script>
+'.Annotate::footer($LAUNCH).'
 <script type="text/javascript">
 function startAnnotate() {
-  // var ann = new Annotator(jQuery(\'#page-container\'));
-  // console.log(ann);
-  // console.log("Annotator started");
-      $("#page-container").annotator()
-      .annotator("setupPlugins", {} , {
-         Auth: false,
-         Tags: false,
-         Filter: false,
-         Store: {
-            prefix: "'.$api_endpoint.'",
-            loadFromSearch: false
-         }
-      } );
-      console.log("Annotator started");
+      tsugiStartAnnotation("#page-container");
 }
 $(document).ready( function () {
     setTimeout(startAnnotate, 10);
