@@ -27,6 +27,8 @@ $type = $retval[1];
 
 header("Content-Type: ".$type);
 
+$api_endpoint = $CFG->wwwroot . '/api/annotate/' . session_id();
+
 $matches = array(
     array(false, '</head>','
 <link href="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
@@ -44,9 +46,20 @@ style="position: fixed; border-radius: 4px; border: 4px solid darkblue; z-index:
 <script src="'.$CFG->staticroot.'/js/annotator-full.1.2.10/annotator-full.min.js"></script>
 <script type="text/javascript">
 function startAnnotate() {
-  var ann = new Annotator(jQuery(\'#page-container\'));
-  console.log(ann);
-  console.log("Annotator started");
+  // var ann = new Annotator(jQuery(\'#page-container\'));
+  // console.log(ann);
+  // console.log("Annotator started");
+      $("#page-container").annotator()
+      .annotator("setupPlugins", {} , {
+         Auth: false,
+         Tags: false,
+         Filter: false,
+         Store: {
+            prefix: "'.$api_endpoint.'",
+            loadFromSearch: false
+         }
+      } );
+      console.log("Annotator started");
 }
 $(document).ready( function () {
     setTimeout(startAnnotate, 10);
