@@ -37,7 +37,7 @@ style="position: fixed; border-radius: 4px; border: 4px solid darkblue; z-index:
     array(false, '</body>', '
 <script src="'.$CFG->staticroot.'/js/jquery-1.11.3.js"></script>
 <script src="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
-'.Annotate::footer($LAUNCH).'
+'.Annotate::footer($LAUNCH->user->id).'
 <script type="text/javascript">
 function startAnnotate() {
       tsugiStartAnnotation("#page-container");
