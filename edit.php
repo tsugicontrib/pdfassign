@@ -101,7 +101,7 @@ $job = (new Job())
     return;
 } 
 
-$blob_id = $LAUNCH->result->getJsonKey('blob_id');
+$file_id = $LAUNCH->result->getJsonKey('file_id');
 
 $next = U::safe_href(U::get($_GET, 'next', 'edit.php'));
 $user_id = U::safe_href(U::get($_GET, 'user_id'));
@@ -121,7 +121,7 @@ if ( $json == null ) $json = new \stdClass();
 $lock = isset($json->lock) && $json->lock;
 
 $menu = new \Tsugi\UI\MenuSet();
-if ( $blob_id ) {
+if ( $file_id ) {
     $menu->addLeft(__('View'), 'index.php');
 } else {
     $menu->addLeft(__('Please upload'), false);
@@ -191,7 +191,7 @@ if ( strlen($inst_note) > 0 ) {
     echo($OUTPUT->modalString(__("Instructor Note"), htmlentities($inst_note), "noteModal"));
 }
 
-if ( $blob_id ) {
+if ( $file_id ) {
     if ( count($annotations) > 0 ) {
         echo("<p>".__('Annotations:').' '.count($annotations)."</p>\n");
     }

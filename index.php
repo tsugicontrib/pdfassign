@@ -21,22 +21,22 @@ if ( $user_id && ! $LAUNCH->user->instructor ) {
 }
 if ( ! $user_id ) $user_id = $LAUNCH->user->id;
 
-$blob_id = $LAUNCH->result->getJsonKeyForUser('blob_id', false, $user_id);
-error_log("U=$user_id b=$blob_id");
-if ( ! $blob_id ) {
+$file_id = $LAUNCH->result->getJsonKeyForUser('file_id', false, $user_id);
+error_log("U=$user_id b=$file_id");
+if ( ! $file_id ) {
     header("Location: ".addSession($next));
     return;
 }
 
 
 // Might be a string or opened handle
-$retval = Access::openContent($LAUNCH, $blob_id);
+$retval = Access::openContent($LAUNCH, $file_id);
 
-// If we get a string - some how the blob_id link is broken
+// If we get a string - some how the file_id link is broken
 if ( ! is_array($retval) ) {
-    $LAUNCH->result->setJsonKeyForUser('blob_id', false);
-    if (is_string($retval) ) $_SESSION['error'] = 'Error retrieving blob='.$blob_id.' ('.$retval.')';
-    error_log("Could not load blob for user=$user_id b=$blob_id error=".$retval);
+    $LAUNCH->result->setJsonKeyForUser('file_id', false);
+    if (is_string($retval) ) $_SESSION['error'] = 'Error retrieving blob='.$file_id.' ('.$retval.')';
+    error_log("Could not load blob for user=$user_id b=$file_id error=".$retval);
     header("Location: ".addSession($next));
     return;
 }

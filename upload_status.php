@@ -115,9 +115,9 @@ foreach ($job->getExportUrls() as $file) {
     $results[] = $temp_file;
     stream_copy_to_stream($source, $dest);
     error_log('Inserting Blob '.$temp_file);
-    $blob_id = BlobUtil::uploadPathToBlob($temp_file, 'text/html');
-    error_log('Inserted Blob '.$temp_file.' '.$blob_id);
-    $LAUNCH->result->setJsonKey('blob_id', $blob_id);
+    $file_id = BlobUtil::uploadPathToBlob($temp_file, 'text/html');
+    error_log('Inserted Blob '.$temp_file.' '.$file_id);
+    $LAUNCH->result->setJsonKey('file_id', $file_id);
 
     // TODO: unlink($temp_file);
 
