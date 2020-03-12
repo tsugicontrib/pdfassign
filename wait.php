@@ -21,19 +21,37 @@ $tag = "context_". $LAUNCH->context->id . '::result_' . $LAUNCH->result->id;
 // Render view
 $OUTPUT->header();
 
+// https://www.w3schools.com/howto/howto_css_loader.asp
+?>
+<style>
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<?php
+
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
-$OUTPUT->welcomeUserCourse();
-$OUTPUT->flashMessages();
 
 ?>
-<p>Converting your PDF - This can take 1-3 minutes...</p>
+<center>
+<p>Converting your PDF using CloudConvert - This can take 1-3 minutes...</p>
+<div class="loader"></div>
+<p>Status: <span id="status"></span> (<span id="ellapsed">1</span> seconds)</p>
+</center>
+<!--
 <p><a href="upload_status.php" target="_blank">Status (Debug only)</a></p>
-<p>
-Status: <span id="status"></span>
-Ellapsed: <span id="ellapsed"></span>
-<span id="spinner" style="display:none;"><img src="<?= $OUTPUT->getSpinnerUrl() ?>"/></span>
-</p>
+-->
 <?php
 $OUTPUT->footerStart();
 ?>

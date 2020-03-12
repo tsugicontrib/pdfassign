@@ -124,7 +124,7 @@ $menu = new \Tsugi\UI\MenuSet();
 if ( $file_id ) {
     $menu->addLeft(__('View'), 'index.php');
 } else {
-    $menu->addLeft(__('Please upload'), false);
+    $menu->addLeft(__('Please upload your file'), false);
 }
 
 if ( $LAUNCH->user->instructor ) {
@@ -150,7 +150,6 @@ $OUTPUT->header();
 
 $OUTPUT->bodyStart();
 $OUTPUT->topNav($menu);
-$OUTPUT->welcomeUserCourse();
 $OUTPUT->flashMessages();
 
 SettingsForm::start();
@@ -202,11 +201,22 @@ if ( $file_id ) {
 }
 
 ?>
-<p>
+<span class="fa fa-file-pdf-o fa-3x" style="color: var(--primary); float:right;"></span>
 <form action="<?= addSession('edit.php') ?>" method="post" id="upload_form" enctype="multipart/form-data">
-    <input type="file" id="thepdf" name="result_<?= $LAUNCH->result->id ?>"> (Max size <?= $upload_max_size ?>) <br/>
-    <input type="submit" value="Submit">
-  </form>
+<p>
+<label class="btn btn-default">
+    <input type="file" class="file-upload" id="thepdf" name="result_<?= $LAUNCH->result->id ?>">
+</label>
+</p>
+<p>
+    <input type="submit" id="submit" class="btn btn-primary" value="Submit"> (Max size <?= $upload_max_size ?>) 
+    <span id="spinner" style="display:none;"><img src="<?= $OUTPUT->getSpinnerUrl() ?>"/></span>
+</p>
+</form>
+<p>
+Please select a PDF file to upload.  This file will be converted from PDF to HTML
+using <a href="https://www.cloudconvert.com" target="_blank">cloudconvert.com</a>
+and then the resulting HTML will be stored in this system for annotation.
 </p>
 <?php
 $OUTPUT->footerStart();
@@ -233,6 +243,8 @@ $("#upload_form").submit(function(e) {
             e.preventDefault();
             return;
         }
+        $("#spinner").show();
+        $("#submit").attr("disabled", true);
         return;  // Allow POST to happen
     }
     e.preventDefault();
