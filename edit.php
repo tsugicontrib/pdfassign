@@ -158,9 +158,6 @@ $OUTPUT->welcomeUserCourse();
 $OUTPUT->flashMessages();
 
 SettingsForm::start();
-echo("<p>Configure the LTI Tool<p>\n");
-SettingsForm::text('code',__('Code'));
-SettingsForm::checkbox('grade',__('Send a grade'));
 ?>
 <p>
 This program makes use of the following technologies:
@@ -170,11 +167,16 @@ This program makes use of the following technologies:
 <li>Open Source JavaScript annotation software from 
 <a href="https://annotatorjs.org/" target="_blank">Annotator JS</a></li>
 </ul>
+</p>
+<?php if ( $LAUNCH->user->instructor ) { ?>
+<p>
 The CloudConvert API requires a license.  There are free licenses available
 for a few conversions per day.  Use the <b>Configure</b> option to set your
 license key across all the links for a particular class.
 </p>
 <?php
+} // instructor
+
 SettingsForm::done();
 SettingsForm::end();
 
@@ -184,10 +186,20 @@ if ( ! $api_key ) {
     $OUTPUT->footer();
     return;
 }
+$OUTPUT->helpModal("PDF Annotation Tool",
+    "You can upload a PDF document with this tool.  You and your teacher can annotate your document.
+    To view an annotation, hover over the highlighted text.
+    To add an annotation, simply highlight text and an edit dialog will pop up so you can add, edit, or delete a comment.");
+
+if ( strlen($inst_note) > 0 ) {
+    echo($OUTPUT->modalString(__("Instructor Note"), htmlentities($inst_note), "noteModal"));
+}
 
 if ( $blob_id ) {
-    echo("<p>Blob_id: $blob_id</p>\n");
+    $OUTPUT->footer();
+    return;
 }
+
 ?>
 <p>
 <form action="<?= addSession('edit.php') ?>" method="post" id="upload_form" enctype="multipart/form-data">
