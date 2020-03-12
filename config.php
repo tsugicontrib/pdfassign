@@ -30,37 +30,69 @@ if ( $redirect ) {
 
 $settings = $LAUNCH->context->settingsGetAll();
 
+$menu = new \Tsugi\UI\MenuSet();
+$menu->addLeft(__('Back'), 'edit.php');
+$menu->addRight(__('API Keys'), '#', /* push */ false, 'data-toggle="modal" data-target="#apiModal"');
+$menu->addRight(__('Privacy'), '#', /* push */ false, 'data-toggle="modal" data-target="#privacyModal"');
+
 // View
 $OUTPUT->header();
 $OUTPUT->bodyStart();
-$OUTPUT->topNav();
-
-// Settings button and dialog
-
-echo('<div style="float: right;">');
-echo('<a href="edit.php"><button class="btn btn-info">Back</button></a> '."\n");
-echo('</div>');
-
+$OUTPUT->topNav($menu);
 $OUTPUT->flashMessages();
 
-$OUTPUT->welcomeUserCourse();
 
-// echo("<pre>\n");var_dump($set);echo("</pre>\n");
+echo($OUTPUT->modalString(__("Privacy details"), "
+<p>
+<b>Privacy Note:</b>
+Once a PDF file has been converted by CloudConvert,
+the HTML is pulled back into this system and and served from
+this system for viewing and annotation.  CloudConvert
+does <b>not</b> retain either the PDF or the converted
+HTML longer than 24 hours.  It is merely a conversion
+service.
+</p>
+", "privacyModal"));
+
+echo($OUTPUT->modalString(__("API Key details"), "
+<p>
+To get an API key, go to 
+<a href=\"https://cloudconvert.com/\" target=\"_blank\">
+cloudconvert.com</a> and create an account.  Then create an
+API V2 key from your dashboard.  Give the key the
+<b>user.read</b>,
+<b>user.write</b>,
+<b>task.read</b>,
+and
+<b>task.write</b> permissions and
+copy and retain the API key and paste it into this page.
+</p>
+<p>
+CloudConvert provides limited use (about 25 conversions per day)
+production API keys for free. They also provide a 'sandbox' environment
+for testing.  You have to explicity list the files you will use
+with the sandbox, but there is no limit on the number
+of conversions.
+</p>
+<p>
+The sandbox has 
+different keys than production
+so when you switch between sandbox an production in this screen you need to
+switch keys as well.
+</p>
+<p>
+CloudConvert has an excellent 'Jobs' dashboard that lets you monitor
+your jobs in progress and completed and makes it easy to debug problems
+with any conversions.  You can monitor this as students are uploading and
+converting files to help diagnose issues they might be experiencing.
+", "apiModal"));
 
 ?>
 <p>
-This tool will not work without an API key from 
+This tool requires API key from 
 <a href="https://cloudconvert.com/" target="_blank">
 CloudConvert</a> so that it can convert PDF files to
-HTML files for annotation.  CloudConvert provides limited use
-API keys for free and you can use their sandbox API with a limited set of
-PDF files for testing.
-<b>Privacy Note:</b>
-Once a PDF file has been converted,
-the HTML is pulled back into this system and and served from
-this system for viewing and annotation.  CloudConvert
-does <b>not</b> any data longer than 24 hours.  It is merely a conversion
-service.
+HTML files for annotation. 
 </p>
 <p><b>Note:</b> This is a per-course configuration, not a per-link
 configuration so <b>changing this configuration</b>
@@ -68,8 +100,9 @@ affects all of the links in a course.  So be careful.
 </p>
 <form method="post">
 <p>
+Are you using the CloudConvert sandbox?
 <select name="sandbox">
-<option value="">-- Are you using the sandbox --</option>
+<option value="">-- Please select --</option>
 <option value="false"
 <?php if ( U::get($settings, "sandbox") == 'false' ) echo('selected'); ?>
 >No</option>
@@ -78,7 +111,7 @@ affects all of the links in a course.  So be careful.
 >Yes</option>
 </select>
 </p>
-<p>API_KEY<br/>
+<p>Cloudconvert v2 API_KEY<br/>
 <textarea name="api_key" style="width:80%;" rows="10">
 <?= htmlentities(U::get($settings, 'api_key')) ?>
 </textarea></p>

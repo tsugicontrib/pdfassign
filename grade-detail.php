@@ -28,7 +28,7 @@ $self_url = addSession('grade.php?user_id='.$user_id);
 $row = GradeUtil::gradeLoad($user_id);
 
 $annotations = Annotate::loadAnnotations($LAUNCH, $user_id);
-$content = $LAUNCH->result->getJsonKeyForUser('content', '', $user_id);
+$blob_id = $LAUNCH->result->getJsonKeyForUser('blob_id', false, $user_id);
 
 // Load and parse the old JSON
 $json = $LAUNCH->result->getJsonForUser($user_id);
@@ -120,7 +120,7 @@ GradeUtil::gradeShowInfo($row, false);
 
 echo("<p>Annotation count: ".count($annotations)."</p>\n");
 
-if ( strlen($content) > 0 ) {
+if ( $blob_id ) {
     $next = Table::makeUrl('grade-detail.php', $getparms);
     echo('<p><a href="index.php?user_id='.$user_id.'&next='.urlencode($next).'">');
     echo(__('View / Annotate Submission'));

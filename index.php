@@ -11,8 +11,8 @@ use \Tsugi\Blob\Access;
 $LAUNCH = LTIX::requireData();
 
 $next = U::safe_href(U::get($_GET, 'next', 'edit.php'));
-$edit_text = __('Info');
-if ( $next != 'edit.php' ) $edit_text = __('Back');
+$next_text = __('Info');
+if ( $next != 'edit.php' ) $next_text = __('Back');
 
 $user_id = U::safe_href(U::get($_GET, 'user_id'));
 if ( $user_id && ! $LAUNCH->user->instructor ) {
@@ -21,11 +21,13 @@ if ( $user_id && ! $LAUNCH->user->instructor ) {
 }
 if ( ! $user_id ) $user_id = $LAUNCH->user->id;
 
-$blob_id = $LAUNCH->result->getJsonKeyForUser('blob_id', $user_id);
+$blob_id = $LAUNCH->result->getJsonKeyForUser('blob_id', false, $user_id);
+error_log("U=$user_id b=$blob_id");
 if ( ! $blob_id ) {
-    header("Location: ".addSession('edit.php'));
+    header("Location: ".addSession($next));
     return;
 }
+
 
 // Might be a string or opened handle
 $retval = Access::openContent($LAUNCH, $blob_id);
@@ -34,7 +36,8 @@ $retval = Access::openContent($LAUNCH, $blob_id);
 if ( ! is_array($retval) ) {
     $LAUNCH->result->setJsonKeyForUser('blob_id', false);
     if (is_string($retval) ) $_SESSION['error'] = 'Error retrieving blob='.$blob_id.' ('.$retval.')';
-    header("Location: ".addSession('edit.php'));
+    error_log("Could not load blob for user=$user_id b=$blob_id error=".$retval);
+    header("Location: ".addSession($next));
     return;
 }
 
@@ -55,12 +58,12 @@ $matches = array(
 <div id="page-container">
 <button onclick="window.location.href = \''.addSession($next).'\';"
 style="position: fixed; border-radius: 4px; border: 4px solid darkblue; z-index: 10000; color: white; background-color: #008CBA;
- font-size: 16px; right:20px;  padding: 10px 16px;">'.__('Info').'</button>
+ font-size: 16px; right:20px;  padding: 10px 16px;">'.$next_text.'</button>
 '),
     array(false, '</body>', '
 <script src="'.$CFG->staticroot.'/js/jquery-1.11.3.js"></script>
 <script src="http://localhost:8888/tsugi-static/js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
-'.Annotate::footer($LAUNCH->user->id).'
+'.Annotate::footer($user_id).'
 <script type="text/javascript">
 function startAnnotate() {
       tsugiStartAnnotation("#page-container");

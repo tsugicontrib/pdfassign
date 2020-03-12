@@ -127,10 +127,6 @@ if ( $blob_id ) {
     $menu->addLeft(__('Please upload'), false);
 }
 
-if ( count($annotations) > 0 ) {
-    $menu->addRight(__('Annotations:').' '.count($annotations), false);
-}
-
 if ( $LAUNCH->user->instructor ) {
     $submenu = new \Tsugi\UI\Menu();
     $submenu->addLink(__('Student Data'), 'grades');
@@ -196,6 +192,11 @@ if ( strlen($inst_note) > 0 ) {
 }
 
 if ( $blob_id ) {
+    if ( count($annotations) > 0 ) {
+        echo("<p>".__('Annotations:').' '.count($annotations)."</p>\n");
+    }
+    echo("<p>Your file has been uploaded.</p>\n");
+
     $OUTPUT->footer();
     return;
 }
