@@ -58,10 +58,8 @@ $OUTPUT->footerStart();
 <script>
 function checkStatus() {
     console.log('checkStatus()');
-    $('#spinner').show();
     $.getJSON( '<?= addSession("upload_status.php") ?>', function( data ) {
         console.log(data);
-        $('#spinner').hide();
         $('#status').html(data.status);
         $('#job_id').html(data.job_id);
         $('#ellapsed').html(data.ellapsed);
