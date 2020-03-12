@@ -16,6 +16,9 @@ $LAUNCH = LTIX::requireData();
 
 $context_settings = $TSUGI_LAUNCH->context->settingsGetAll();
 
+$size = U::get($_GET, 'size');
+$seconds = (int) (15 + ($size/37000));
+
 $tag = "context_". $LAUNCH->context->id . '::result_' . $LAUNCH->result->id;
 
 // Render view
@@ -48,6 +51,12 @@ $OUTPUT->topNav();
 <p>Converting your PDF using CloudConvert - This can take 1-3 minutes...</p>
 <div class="loader"></div>
 <p>Status: <span id="status"></span> (<span id="ellapsed">1</span> seconds)</p>
+<div class="progress">
+  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" id="progress"
+  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+    
+  </div>
+</div>
 </center>
 <!--
 <p><a href="upload_status.php" target="_blank">Status (Debug only)</a></p>
@@ -56,6 +65,9 @@ $OUTPUT->topNav();
 $OUTPUT->footerStart();
 ?>
 <script>
+var size = <?= $size ?>;
+var seconds = <?= $seconds ?>;
+
 function checkStatus() {
     console.log('checkStatus()');
     $.getJSON( '<?= addSession("upload_status.php") ?>', function( data ) {
@@ -63,22 +75,28 @@ function checkStatus() {
         $('#status').html(data.status);
         $('#job_id').html(data.job_id);
         $('#ellapsed').html(data.ellapsed);
+        var progress = Math.trunc(data.ellapsed * 100 / seconds);
+        if ( progress > 90 ) progress = 90;
+        $('#progress').attr("aria-valuenow", progress);
+        $('#progress').css("width", progress+'%');
         if ( data.status == 'error') {
 			alert('Something went wrong with the conversion, detail: '+data.code);
 			return;
 		}
         if ( data.status == 'downloading') {
+            $('#progress').removeClass("progress-bar-info", progress);
+            $('#progress').addClass("progress-bar-success", progress);
             setTimeout(checkStatus, 1000);
             return;
         }
         if ( data.status != 'finished') {
-            setTimeout(checkStatus, 5000);
+            setTimeout(checkStatus, 3000);
             return;
         }
-        window.location.replace('<?= addSession("index.php") ?>');
+        window.location.replace('<?= addSession("index.php".'?size='.$size) ?>'+'&ellapsed='+data.ellapsed);
     });
 }
-setTimeout(checkStatus, 2000);
+setTimeout(checkStatus, 1000);
 </script>
 <?php
 $OUTPUT->footerEnd();

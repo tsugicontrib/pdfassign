@@ -98,10 +98,11 @@ $job = (new Job())
 
     $uploadTask = $job->getTasks()->name('upload-my-file')[0];
 
+    $size=$thefdes['size'];
     $cloudconvert->tasks()->upload($uploadTask, fopen($thefdes['tmp_name'], 'r'));
 
     $_SESSION['success'] = "Data uploaded ".$job_id;
-    header('Location: '.addSession('wait.php'));
+    header('Location: '.addSession('wait.php?size='.$size));
     return;
 } 
 
@@ -251,7 +252,7 @@ $("#upload_form").submit(function(e) {
         }
         if ( file.type != 'application/pdf') {
             console.log('Type', file.type);
-             alert("File " + file.name + " expecting PDF, found" + file.type );
+             alert("File " + file.name + " expecting PDF, found " + file.type );
             e.preventDefault();
             return;
         }

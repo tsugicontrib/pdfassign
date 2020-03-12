@@ -10,6 +10,12 @@ use \Tsugi\Blob\Access;
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
 
+$size = U::safe_href(U::get($_GET, 'size'));
+$ellapsed = U::safe_href(U::get($_GET, 'ellapsed'));
+if ( $size && $ellapsed ) {
+    error_log("CloudConvert $ellapsed $size");
+}
+
 $next = U::safe_href(U::get($_GET, 'next', 'edit.php'));
 $next_text = __('Info');
 if ( $next != 'edit.php' ) $next_text = __('Back');
