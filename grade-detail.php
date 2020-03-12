@@ -8,6 +8,7 @@ use \Tsugi\Core\Annotate;
 use \Tsugi\Core\Result;
 use \Tsugi\Core\LTIX;
 use \Tsugi\Grades\GradeUtil;
+use \Tsugi\Blob\BlobUtil;
 
 session_start();
 
@@ -35,7 +36,6 @@ $json = $LAUNCH->result->getJsonForUser($user_id);
 $json = json_decode($json);
 if ( $json == null ) $json = new \stdClass();
 
-$old_lock = isset($json->lock) && $json->lock;
 
 $old_grade = $row ? $row['grade'] : 0;
 $old_percent = (int) ($old_grade * 100);
@@ -76,18 +76,18 @@ if ( isset($_POST['instSubmit']) || isset($_POST['instSubmitAdvance']) ) {
     }
 
     $update_json = false;
-    if ( U::get($_POST, 'reset') == 'on' ) {
+    if ( U::get($_POST, 'reset') == 'on' ||  U::get($_POST, 'delete') == 'on') {
         $json->annotations = array();
         if ( strlen($success) > 0 ) $success .= ', ';
         $success .= 'Annotations reset';
         $update_json = true;
     }
 
-    $new_lock = U::get($_POST, 'lock') == 'on';
-    if ( $new_lock != $old_lock ) {
-        $json->lock = $new_lock;
+    if ( $file_id > 0 && U::get($_POST, 'delete') == 'on' ) {
+        BlobUtil::deleteBlob($file_id);
+        $json->file_id = false;
         if ( strlen($success) > 0 ) $success .= ', ';
-        $success .= $new_lock ? 'Assignment locked' : 'Assignment unlocked';
+        $success .= 'PDF deleted';
         $update_json = true;
     }
 
@@ -141,14 +141,17 @@ if ( $next_user_id_ungraded !== false ) {
 echo('<label for="percent">Percentage (0-100)</label>
       <input type="number" name="percent" id="grade" min="0" max="100" value="'.$old_percent.'"/><br/>');
 
-echo('<label for="lock">Student Submission Locked:</label>
-      <input type="checkbox" name="lock" id="lock"'.
-      ($old_lock ? ' checked ' : '')
-      .'/><br/>');
-
+if ( count($annotations) > 0 ) {
 echo('<label for="reset">Reset Annotations:</label>
       <input type="checkbox" name="reset" id="reset"
       onclick="return confirm(\'Are you sure you want to reset the annotations?\');" /><br/>');
+}
+
+if ( $file_id ) {
+echo('<label for="delete">Delete PDF and allow re-submit:</label>
+      <input type="checkbox" name="delete" id="delete"
+      onclick="return confirm(\'Are you sure you want to delete the PDF and its annotations?\');" /><br/>');
+}
 
 echo('<label for="inst_note">Instructor Note To Student</label><br/>
       <textarea name="inst_note" id="inst_note" style="width:60%" rows="5">');
