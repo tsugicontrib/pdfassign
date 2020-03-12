@@ -8,9 +8,9 @@ This repository contains two PDF files are good samples
 that you can use with the CloudConvert sandbox using the
 following md5 checksums:
 
-    e787a11a7b8b2c468feb176f586c92c4  why_sakai.pdf
-
     53d6fe6b688c31c565907c81de625046  input.pdf
+
+    e787a11a7b8b2c468feb176f586c92c4  why_sakai.pdf
 
 Privacy
 -------

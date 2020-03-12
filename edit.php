@@ -56,6 +56,10 @@ $p = $CFG->dbprefix;
 $context_settings = $TSUGI_LAUNCH->context->settingsGetAll();
 $api_key = U::get($context_settings, 'api_key');
 $sandbox = U::get($context_settings, 'sandbox');
+if ( ! $api_key && isset($CFG->cloudconvert_sandbox_key) ) {
+    $api_key = $CFG->cloudconvert_sandbox_key;
+    $sandbox = 'true';
+}
 
 // https://github.com/cloudconvert/cloudconvert-php
 if ( $api_key && $thefdes ) {
@@ -131,7 +135,7 @@ if ( $LAUNCH->user->instructor ) {
     $submenu = new \Tsugi\UI\Menu();
     $submenu->addLink(__('Student Data'), 'grades');
     $submenu->addLink(__('Settings'), '#', /* push */ false, SettingsForm::attr());
-    $submenu->addLink(__('Configure'), 'config.php');
+    $submenu->addLink(__('API Key'), 'config.php');
     if ( $CFG->launchactivity ) {
         $submenu->addLink(__('Analytics'), 'analytics');
     }
@@ -218,6 +222,19 @@ Please select a PDF file to upload.  This file will be converted from PDF to HTM
 using <a href="https://www.cloudconvert.com" target="_blank">cloudconvert.com</a>
 and then the resulting HTML will be stored in this system for annotation.
 </p>
+<?php if ( $sandbox == 'true' ) { ?>
+<hr/>
+<p>
+This tool is currently configured to use a CloudConvert sandbox API, which means that 
+it can only process a limited number of PDF files.  These files
+must be added to the "approved list" using their MD5 checksum.
+Here are some sample files to try and their corresponding checksums:
+<ul>
+<li><a href="input.pdf" target="_blank">input.pdf</a> - The sample from CloudConvert - e787a11a7b8b2c468feb176f586c92c4</li>
+<li><a href="why_sakai.pdf" target="_blank">why_sakai.pdf</a> - An export from Google Slides - e787a11a7b8b2c468feb176f586c92c4</li>
+</ul>
+</p>
+<?php } ?>
 <?php
 $OUTPUT->footerStart();
 ?>

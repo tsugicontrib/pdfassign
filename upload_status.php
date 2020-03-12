@@ -34,6 +34,10 @@ $context_settings = $LAUNCH->context->settingsGetAll();
 // https://github.com/cloudconvert/cloudconvert-php
 $api_key = U::get($context_settings, 'api_key');
 $sandbox = U::get($context_settings, 'sandbox');
+if ( ! $api_key && isset($CFG->cloudconvert_sandbox_key) ) {
+    $api_key = $CFG->cloudconvert_sandbox_key;
+    $sandbox = 'true';
+}
 
 if ( ! $api_key ) {
     $retval['status'] = 'API Key not configured.';
