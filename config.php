@@ -24,7 +24,7 @@ if ( U::get($_POST, 'update') ) {
 
 if ( $redirect ) {
     $_SESSION['success'] = 'Settings updated.';
-    header("Location: ".addSession('index.php'));
+    header("Location: ".addSession('edit.php'));
     return;
 }
 
@@ -38,7 +38,7 @@ $OUTPUT->topNav();
 // Settings button and dialog
 
 echo('<div style="float: right;">');
-echo('<a href="index.php"><button class="btn btn-info">Back</button></a> '."\n");
+echo('<a href="edit.php"><button class="btn btn-info">Back</button></a> '."\n");
 echo('</div>');
 
 $OUTPUT->flashMessages();

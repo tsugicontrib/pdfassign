@@ -5,8 +5,6 @@ require_once "../config.php";
 use \Tsugi\Util\U;
 use \Tsugi\Util\Net;
 use \Tsugi\Core\LTIX;
-use \Tsugi\Core\Settings;
-use \Tsugi\UI\SettingsForm;
 use \Tsugi\Blob\BlobUtil;
 
 use \CloudConvert\CloudConvert;

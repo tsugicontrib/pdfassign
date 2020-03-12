@@ -59,7 +59,7 @@ function checkStatus() {
             setTimeout(checkStatus, 5000);
             return;
         }
-        window.location.replace('<?= addSession("view.php") ?>');
+        window.location.replace('<?= addSession("index.php") ?>');
     });
 }
 setTimeout(checkStatus, 2000);
