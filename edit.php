@@ -231,9 +231,10 @@ it can only process a limited number of PDF files.  These files
 must be added to the "approved list" using their MD5 checksum.
 Here are some sample files to try and their corresponding checksums:
 <ul>
-<li><a href="input.pdf" target="_blank">input.pdf</a> - The sample from CloudConvert - e787a11a7b8b2c468feb176f586c92c4</li>
+<li><a href="input.pdf" target="_blank">input.pdf</a> - The sample from CloudConvert - 53d6fe6b688c31c565907c81de625046</li>
 <li><a href="why_sakai.pdf" target="_blank">why_sakai.pdf</a> - An export from Google Slides - e787a11a7b8b2c468feb176f586c92c4</li>
 </ul>
+Once you switch to a non-sandbox API key - this message will disappear.
 </p>
 <?php } ?>
 <?php

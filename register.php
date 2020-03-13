@@ -23,6 +23,13 @@ $REGISTER_LTI2 = array(
         */
     ),
     "screen_shots" => array(
+        "store/screen-01.png",
+        "store/screen-02.png",
+        "store/screen-03.png",
+        "store/screen-04.png",
+        "store/screen-05.png",
+        "store/screen-06.png",
+        "store/screen-07.png",
     )
 
 );
