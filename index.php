@@ -51,7 +51,7 @@ $type = $retval[1];
 
 header("Content-Type: ".$type);
 
-$api_endpoint = $CFG->wwwroot . '/api/annotate/' . session_id() . ':' . $LAUNCH->result->id;
+$api_endpoint = $CFG->wwwroot . '/api/annotate/' . session_id() . ':' . $user_id;
 
 $matches = array(
     array(false, '</head>','
